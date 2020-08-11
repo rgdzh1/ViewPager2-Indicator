@@ -34,7 +34,7 @@ Usage
 ----------------
 
 ```xml
-<com.badoualy.stepperindicator.StepperIndicator
+<com.badoualy.stepperindicator.yey.StepperIndicator
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:stpi_stepCount="5"/>

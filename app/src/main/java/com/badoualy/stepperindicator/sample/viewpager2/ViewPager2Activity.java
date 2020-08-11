@@ -8,9 +8,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 
-import com.badoualy.stepperindicator.StepperIndicator;
-import com.badoualy.stepperindicator.StepperIndicator2;
 import com.badoualy.stepperindicator.sample.PageFragment;
+import com.badoualy.stepperindicator.yey.StepperIndicator2;
 import com.badoualy.stepperindicator.sample.R;
 
 import java.util.ArrayList;

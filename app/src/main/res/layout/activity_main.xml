@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.badoualy.stepperindicator.StepperIndicator
+    <com.badoualy.stepperindicator.yey.StepperIndicator
         android:id="@+id/stepper_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.badoualy.stepperindicator.sample.R;
+
 public class PageFragment extends Fragment {
 
     private TextView lblPage;

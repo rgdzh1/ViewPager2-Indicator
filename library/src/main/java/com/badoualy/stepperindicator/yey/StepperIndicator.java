@@ -1,4 +1,4 @@
-package com.badoualy.stepperindicator;
+package com.badoualy.stepperindicator.yey;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -33,19 +33,166 @@ import android.view.animation.DecelerateInterpolator;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * <p>Step indicator that can be used with (or without) a {@link ViewPager} to display current progress through an
+ * Onboarding or any process in multiple steps. </p>
+ * <p> The default main primary color if not specified in the XML attributes will use the theme primary color defined
+ * via {@code colorPrimary} attribute. </p>
+ * <p> If this view is used on a device below API 11, animations will not be used. </p>
+ * <p> Usage of stepper custom attributes: </p>
+ * <table summary="Attributes"><thead>
+ * <tr>
+ * <th>Name</th>
+ * <th>Description</th>
+ * <th>Default value</th>
+ * </tr>
+ * </thead><tbody>
+ * <tr>
+ * <td>stpi_animDuration</td>
+ * <td>duration of the line tracing animation</td>
+ * <td>250 ms</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_stepCount</td>
+ * <td>number of pages/steps</td>
+ * <td></td>
+ * </tr>
+ * <tr>
+ * <td>stpi_circleColor</td>
+ * <td>color of the stroke circle</td>
+ * <td>#b3bdc2 (grey)</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_circleRadius</td>
+ * <td>radius of the circle</td>
+ * <td>10dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_circleStrokeWidth</td>
+ * <td>width of circle's radius</td>
+ * <td>4dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_indicatorColor</td>
+ * <td>color for the current page indicator</td>
+ * <td>#00b47c (green)</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_indicatorRadius</td>
+ * <td>radius for the circle of the current page indicator</td>
+ * <td>4dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_lineColor</td>
+ * <td>color of the line between indicators</td>
+ * <td>#b3bdc2 (grey)</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_lineDoneColor</td>
+ * <td>color of a line when step is done</td>
+ * <td>#00b47c (green)</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_lineStrokeWidth</td>
+ * <td>width of the line stroke</td>
+ * <td>2dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_lineMargin</td>
+ * <td>margin at each side of the line</td>
+ * <td>5dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_showDoneIcon</td>
+ * <td>show the done check icon or not</td>
+ * <td>true</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_showStepNumberInstead</td>
+ * <td>display text number for each step instead of bullets</td>
+ * <td>false</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_useBottomIndicator</td>
+ * <td>display the indicator for the current step at the bottom instead of inside bullet</td>
+ * <td>false</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_useBottomIndicatorWithStepColors</td>
+ * <td>use the same color for the bottom indicator as the step color</td>
+ * <td>false</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_bottomIndicatorHeight</td>
+ * <td>set the height for the bottom indicator component</td>
+ * <td>3dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_bottomIndicatorWidth</td>
+ * <td>set the width for the bottom indicator component</td>
+ * <td>50dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_bottomIndicatorMarginTop</td>
+ * <td>set the top margin for the bottom indicator component</td>
+ * <td>10dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_stepsCircleColors</td>
+ * <td>use multiple colors for each step (array of colors with the size at least the same size as the stpi_stepCount
+ * value)</td>
+ * <td></td>
+ * </tr>
+ * <tr>
+ * <td>stpi_stepsIndicatorColors</td>
+ * <td>use multiple colors for each step indicator (array of colors with the size at least the same size as the
+ * stpi_stepCount value)</td>
+ * <td></td>
+ * </tr>
+ * <tr>
+ * <td>stpi_labels</td>
+ * <td>supply an array of strings to show labels for every step indicator</td>
+ * <td></td>
+ * </tr>
+ * <tr>
+ * <td>stpi_showLabels</td>
+ * <td>Show labels for each step indicator. Useful for timelines or checkpoints.</td>
+ * <td>false</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_labelMarginTop</td>
+ * <td>Top margin for the labels</td>
+ * <td>2dp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_labelSize</td>
+ * <td>Size for the labels</td>
+ * <td>12sp</td>
+ * </tr>
+ * <tr>
+ * <td>stpi_labelColor</td>
+ * <td>Color for the labels</td>
+ * <td>android:textColorSecondary defined in your project</td>
+ * </tr>
+ * </tbody></table>
+ * <p>
+ * <p> Updated by Ionut Negru on 08/08/16 to add the stepClickListener feature.</p>
+ * <p> Updated by Ionut Negru on 09/08/16 to add support for customizations like: multiple colors, step text number,
+ * bottom indicator.</p>
+ * <p> Updated by Rakshak R.Hegde to add support for labels and it's customisations. Supports label too.</p>
+ */
 @SuppressWarnings("unused")
-public class StepperIndicator2 extends View {
+public class StepperIndicator extends View implements ViewPager.OnPageChangeListener {
 
-    private static final String TAG = "StepperIndicator2";
+    private static final String TAG = "StepperIndicator";
 
     /**
      * Duration of the line drawing animation (ms)
@@ -201,7 +348,7 @@ public class StepperIndicator2 extends View {
     private Rect stepAreaRect = new Rect();
     private RectF stepAreaRectF = new RectF();
 
-    private ViewPager2 pager;
+    private ViewPager pager;
     private Drawable doneIcon;
     private boolean showDoneIcon;
 
@@ -222,6 +369,14 @@ public class StepperIndicator2 extends View {
     private int circleColor;
     private int indicatorColor;
 
+    /**
+     * Custom gesture listener though which all the touch events are propagated.
+     * <p>
+     * The whole purpose of this listener is to correctly detect which step was touched by the user and notify
+     * the component which registered to receive event updates through
+     * {@link #addOnStepClickListener(OnStepClickListener)}
+     * </p>
+     */
     private GestureDetector.OnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -238,7 +393,7 @@ public class StepperIndicator2 extends View {
 
             // If the clicked step is valid and an listener was setup - send the event
             if (clickedStep != STEP_INVALID) {
-                for (StepperIndicator2.OnStepClickListener listener : onStepClickListeners) {
+                for (OnStepClickListener listener : onStepClickListeners) {
                     listener.onStepClicked(clickedStep);
                 }
             }
@@ -247,22 +402,22 @@ public class StepperIndicator2 extends View {
         }
     };
 
-    public StepperIndicator2(Context context) {
+    public StepperIndicator(Context context) {
         this(context, null);
     }
 
-    public StepperIndicator2(Context context, AttributeSet attrs) {
+    public StepperIndicator(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public StepperIndicator2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StepperIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
 
     @SuppressWarnings("unused")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public StepperIndicator2(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public StepperIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr);
     }
@@ -321,20 +476,20 @@ public class StepperIndicator2 extends View {
         int defaultLineDoneColor = defaultPrimaryColor;
 
         /* Customize the widget based on the properties set on XML, or use default if not provided */
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StepperIndicator2, defStyleAttr, 0);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StepperIndicator, defStyleAttr, 0);
 
         circlePaint = new Paint();
         circlePaint.setStrokeWidth(
-                a.getDimension(R.styleable.StepperIndicator2_stpi_circleStrokeWidth, defaultCircleStrokeWidth));
+                a.getDimension(R.styleable.StepperIndicator_stpi_circleStrokeWidth, defaultCircleStrokeWidth));
         circlePaint.setStyle(Paint.Style.STROKE);
-        circleColor = a.getColor(R.styleable.StepperIndicator2_stpi_circleColor, defaultCircleColor);
+        circleColor = a.getColor(R.styleable.StepperIndicator_stpi_circleColor, defaultCircleColor);
         circlePaint.setColor(circleColor);
         circlePaint.setAntiAlias(true);
 
         // Call this as early as possible as other properties are configured based on the number of steps
-        setStepCount(a.getInteger(R.styleable.StepperIndicator2_stpi_stepCount, 2));
+        setStepCount(a.getInteger(R.styleable.StepperIndicator_stpi_stepCount, 2));
 
-        final int stepsCircleColorsResId = a.getResourceId(R.styleable.StepperIndicator2_stpi_stepsCircleColors, 0);
+        final int stepsCircleColorsResId = a.getResourceId(R.styleable.StepperIndicator_stpi_stepsCircleColors, 0);
         stepsCirclePaintList = new ArrayList<>(stepCount);
 
         for (int i = 0; i < stepCount; i++) {
@@ -365,23 +520,23 @@ public class StepperIndicator2 extends View {
 
         indicatorPaint = new Paint(circlePaint);
         indicatorPaint.setStyle(Paint.Style.FILL);
-        indicatorColor = a.getColor(R.styleable.StepperIndicator2_stpi_indicatorColor, defaultIndicatorColor);
+        indicatorColor = a.getColor(R.styleable.StepperIndicator_stpi_indicatorColor, defaultIndicatorColor);
         indicatorPaint.setColor(indicatorColor);
         indicatorPaint.setAntiAlias(true);
 
         float defaultTextSize = resources.getDimension(R.dimen.stpi_default_text_size);
-        float textSize = a.getDimension(R.styleable.StepperIndicator2_stpi_StepNumberTextSize, defaultTextSize);
+        float textSize = a.getDimension(R.styleable.StepperIndicator_stpi_StepNumberTextSize, defaultTextSize);
         stepTextNumberPaint = new Paint(indicatorPaint);
         stepTextNumberPaint.setTextSize(textSize);
 
-        int textColor = a.getColor(R.styleable.StepperIndicator2_stpi_StepNumberTextColor, defaultIndicatorColor);
+        int textColor = a.getColor(R.styleable.StepperIndicator_stpi_StepNumberTextColor, defaultIndicatorColor);
         stepTextNumberPaint.setColor(textColor);
 
-        showStepTextNumber = a.getBoolean(R.styleable.StepperIndicator2_stpi_showStepNumberInstead, false);
+        showStepTextNumber = a.getBoolean(R.styleable.StepperIndicator_stpi_showStepNumberInstead, false);
 
         // Get the resource from the context style properties
         final int stepsIndicatorColorsResId = a
-                .getResourceId(R.styleable.StepperIndicator2_stpi_stepsIndicatorColors, 0);
+                .getResourceId(R.styleable.StepperIndicator_stpi_stepsIndicatorColors, 0);
 
         // init the list of colors with the same size as the number of steps
         stepsIndicatorPaintList = new ArrayList<>(stepCount);
@@ -429,31 +584,31 @@ public class StepperIndicator2 extends View {
         //first step as active
         if (showStepTextNumber && !stepsTextNumberPaintList.isEmpty()) {
             stepsTextNumberPaintList.get(0).setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            stepsCirclePaintList.get(0).setColor(a.getColor(R.styleable.StepperIndicator2_stpi_indicatorColor, defaultCircleColor));
+            stepsCirclePaintList.get(0).setColor(a.getColor(R.styleable.StepperIndicator_stpi_indicatorColor, defaultCircleColor));
 
         }
 
         linePaint = new Paint();
         linePaint.setStrokeWidth(
-                a.getDimension(R.styleable.StepperIndicator2_stpi_lineStrokeWidth, defaultLineStrokeWidth));
+                a.getDimension(R.styleable.StepperIndicator_stpi_lineStrokeWidth, defaultLineStrokeWidth));
         linePaint.setStrokeCap(Paint.Cap.ROUND);
         linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setColor(a.getColor(R.styleable.StepperIndicator2_stpi_lineColor, defaultLineColor));
+        linePaint.setColor(a.getColor(R.styleable.StepperIndicator_stpi_lineColor, defaultLineColor));
         linePaint.setAntiAlias(true);
 
         lineDonePaint = new Paint(linePaint);
-        lineDonePaint.setColor(a.getColor(R.styleable.StepperIndicator2_stpi_lineDoneColor, defaultLineDoneColor));
+        lineDonePaint.setColor(a.getColor(R.styleable.StepperIndicator_stpi_lineDoneColor, defaultLineDoneColor));
 
         lineDoneAnimatedPaint = new Paint(lineDonePaint);
 
         // Check if we should use the bottom indicator instead of the bullet one
-        useBottomIndicator = a.getBoolean(R.styleable.StepperIndicator2_stpi_useBottomIndicator, false);
+        useBottomIndicator = a.getBoolean(R.styleable.StepperIndicator_stpi_useBottomIndicator, false);
         if (useBottomIndicator) {
             // Get the default height(stroke width) for the bottom indicator
             float defaultHeight = resources.getDimension(R.dimen.stpi_default_bottom_indicator_height);
 
             bottomIndicatorHeight = a
-                    .getDimension(R.styleable.StepperIndicator2_stpi_bottomIndicatorHeight, defaultHeight);
+                    .getDimension(R.styleable.StepperIndicator_stpi_bottomIndicatorHeight, defaultHeight);
 
             if (bottomIndicatorHeight <= 0) {
                 Log.d(TAG, "init: Invalid indicator height, disabling bottom indicator feature! Please provide " +
@@ -463,44 +618,44 @@ public class StepperIndicator2 extends View {
 
             // Get the default width for the bottom indicator
             float defaultWidth = resources.getDimension(R.dimen.stpi_default_bottom_indicator_width);
-            bottomIndicatorWidth = a.getDimension(R.styleable.StepperIndicator2_stpi_bottomIndicatorWidth, defaultWidth);
+            bottomIndicatorWidth = a.getDimension(R.styleable.StepperIndicator_stpi_bottomIndicatorWidth, defaultWidth);
 
             // Get the default top margin for the bottom indicator
             float defaultTopMargin = resources.getDimension(R.dimen.stpi_default_bottom_indicator_margin_top);
             bottomIndicatorMarginTop = a
-                    .getDimension(R.styleable.StepperIndicator2_stpi_bottomIndicatorMarginTop, defaultTopMargin);
+                    .getDimension(R.styleable.StepperIndicator_stpi_bottomIndicatorMarginTop, defaultTopMargin);
 
             useBottomIndicatorWithStepColors = a
-                    .getBoolean(R.styleable.StepperIndicator2_stpi_useBottomIndicatorWithStepColors, false);
+                    .getBoolean(R.styleable.StepperIndicator_stpi_useBottomIndicatorWithStepColors, false);
         }
 
-        circleRadius = a.getDimension(R.styleable.StepperIndicator2_stpi_circleRadius, defaultCircleRadius);
+        circleRadius = a.getDimension(R.styleable.StepperIndicator_stpi_circleRadius, defaultCircleRadius);
         checkRadius = circleRadius + circlePaint.getStrokeWidth() / 2f;
-        indicatorRadius = a.getDimension(R.styleable.StepperIndicator2_stpi_indicatorRadius, defaultIndicatorRadius);
+        indicatorRadius = a.getDimension(R.styleable.StepperIndicator_stpi_indicatorRadius, defaultIndicatorRadius);
         animIndicatorRadius = indicatorRadius;
         animCheckRadius = checkRadius;
-        lineMargin = a.getDimension(R.styleable.StepperIndicator2_stpi_lineMargin, defaultLineMargin);
+        lineMargin = a.getDimension(R.styleable.StepperIndicator_stpi_lineMargin, defaultLineMargin);
 
-        animDuration = a.getInteger(R.styleable.StepperIndicator2_stpi_animDuration, DEFAULT_ANIMATION_DURATION);
-        showDoneIcon = a.getBoolean(R.styleable.StepperIndicator2_stpi_showDoneIcon, true);
-        doneIcon = a.getDrawable(R.styleable.StepperIndicator2_stpi_doneIconDrawable);
+        animDuration = a.getInteger(R.styleable.StepperIndicator_stpi_animDuration, DEFAULT_ANIMATION_DURATION);
+        showDoneIcon = a.getBoolean(R.styleable.StepperIndicator_stpi_showDoneIcon, true);
+        doneIcon = a.getDrawable(R.styleable.StepperIndicator_stpi_doneIconDrawable);
 
         // Labels Configuration
         labelPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         labelPaint.setTextAlign(Paint.Align.CENTER);
 
         float defaultLabelSize = resources.getDimension(R.dimen.stpi_default_label_size);
-        labelSize = a.getDimension(R.styleable.StepperIndicator2_stpi_labelSize, defaultLabelSize);
+        labelSize = a.getDimension(R.styleable.StepperIndicator_stpi_labelSize, defaultLabelSize);
         labelPaint.setTextSize(labelSize);
 
         float defaultLabelMarginTop = resources.getDimension(R.dimen.stpi_default_label_margin_top);
-        labelMarginTop = a.getDimension(R.styleable.StepperIndicator2_stpi_labelMarginTop, defaultLabelMarginTop);
+        labelMarginTop = a.getDimension(R.styleable.StepperIndicator_stpi_labelMarginTop, defaultLabelMarginTop);
 
-        showLabels(false);
-        setLabels(a.getTextArray(R.styleable.StepperIndicator2_stpi_labels));
+        showLabels(a.getBoolean(R.styleable.StepperIndicator_stpi_showLabels, false));
+        setLabels(a.getTextArray(R.styleable.StepperIndicator_stpi_labels));
 
-        if (a.hasValue(R.styleable.StepperIndicator2_stpi_labelColor)) {
-            setLabelColor(a.getColor(R.styleable.StepperIndicator2_stpi_labelColor, 0));
+        if (a.hasValue(R.styleable.StepperIndicator_stpi_labelColor)) {
+            setLabelColor(a.getColor(R.styleable.StepperIndicator_stpi_labelColor, 0));
         } else {
             setLabelColor(getTextColorSecondary(getContext()));
         }
@@ -509,7 +664,7 @@ public class StepperIndicator2 extends View {
             labels = new CharSequence[]{"First", "Second", "Third", "Fourth", "Fifth"};
         }
 
-        if (!a.hasValue(R.styleable.StepperIndicator2_stpi_stepCount) && labels != null) {
+        if (!a.hasValue(R.styleable.StepperIndicator_stpi_stepCount) && labels != null) {
             setStepCount(labels.length);
         }
 
@@ -994,7 +1149,6 @@ public class StepperIndicator2 extends View {
 
     /**
      * Sets the current step
-     * ViewPager2滑动到不同的界面时候, 调用这个方法
      *
      * @param currentStep a value between 0 (inclusive) and stepCount (inclusive)
      */
@@ -1021,15 +1175,15 @@ public class StepperIndicator2 extends View {
         if (currentStep == previousStep + 1) {
             // Going to next step
             animatorSet = new AnimatorSet();
-            lineAnimator = ObjectAnimator.ofFloat(StepperIndicator2.this, "animProgress", 1.0f, 0.0f);
+            lineAnimator = ObjectAnimator.ofFloat(StepperIndicator.this, "animProgress", 1.0f, 0.0f);
 
             // Same time, pop check mark
-            checkAnimator = ObjectAnimator.ofFloat(StepperIndicator2.this, "animCheckRadius", indicatorRadius,
+            checkAnimator = ObjectAnimator.ofFloat(StepperIndicator.this, "animCheckRadius", indicatorRadius,
                     checkRadius * EXPAND_MARK, checkRadius);
 
             // Finally, pop current step indicator
             animIndicatorRadius = 0;
-            indicatorAnimator = ObjectAnimator.ofFloat(StepperIndicator2.this, "animIndicatorRadius", 0f,
+            indicatorAnimator = ObjectAnimator.ofFloat(StepperIndicator.this, "animIndicatorRadius", 0f,
                     indicatorRadius * 1.4f, indicatorRadius);
 
             animatorSet.play(lineAnimator).with(checkAnimator).before(indicatorAnimator);
@@ -1040,17 +1194,17 @@ public class StepperIndicator2 extends View {
 
             // First, pop out current step indicator
             indicatorAnimator = ObjectAnimator
-                    .ofFloat(StepperIndicator2.this, "animIndicatorRadius", indicatorRadius, 0f);
+                    .ofFloat(StepperIndicator.this, "animIndicatorRadius", indicatorRadius, 0f);
 
             // Then delete line
             animProgress = 1.0f;
             lineDoneAnimatedPaint.setPathEffect(null);
-            lineAnimator = ObjectAnimator.ofFloat(StepperIndicator2.this, "animProgress", 0.0f, 1.0f);
+            lineAnimator = ObjectAnimator.ofFloat(StepperIndicator.this, "animProgress", 0.0f, 1.0f);
 
             // Finally, pop out check mark to display step indicator
             animCheckRadius = checkRadius;
             checkAnimator = ObjectAnimator
-                    .ofFloat(StepperIndicator2.this, "animCheckRadius", checkRadius, indicatorRadius);
+                    .ofFloat(StepperIndicator.this, "animCheckRadius", checkRadius, indicatorRadius);
 
             animatorSet.playSequentially(indicatorAnimator, lineAnimator, checkAnimator);
             makeStepBold();
@@ -1068,10 +1222,11 @@ public class StepperIndicator2 extends View {
         }
 
 
+
         invalidate();
     }
 
-    private void makeStepBold() {
+    private void makeStepBold(){
         if (showStepTextNumber && stepCount == stepsTextNumberPaintList.size() && currentStep != stepCount && previousStep != stepCount) {
             stepsTextNumberPaintList.get(currentStep).setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             stepsTextNumberPaintList.get(previousStep).setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
@@ -1122,11 +1277,11 @@ public class StepperIndicator2 extends View {
      * @param pager {@link ViewPager} to attach
      */
     @SuppressWarnings("unused")
-    public void setViewPager(ViewPager2 pager) {
+    public void setViewPager(ViewPager pager) {
         if (pager.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
-        setViewPager(pager, pager.getAdapter().getItemCount());
+        setViewPager(pager, pager.getAdapter().getCount());
     }
 
     /**
@@ -1137,11 +1292,11 @@ public class StepperIndicator2 extends View {
      *                     the
      *                     final page
      */
-    public void setViewPager(ViewPager2 pager, boolean keepLastPage) {
+    public void setViewPager(ViewPager pager, boolean keepLastPage) {
         if (pager.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
-        setViewPager(pager, pager.getAdapter().getItemCount() - (keepLastPage ? 1 : 0));
+        setViewPager(pager, pager.getAdapter().getCount() - (keepLastPage ? 1 : 0));
     }
 
     /**
@@ -1152,11 +1307,13 @@ public class StepperIndicator2 extends View {
      *                  number
      *                  of pages)
      */
-    public void setViewPager(ViewPager2 pager, int stepCount) {
+    public void setViewPager(ViewPager pager, int stepCount) {
         if (this.pager == pager) {
             return;
         }
-
+        if (this.pager != null) {
+            pager.removeOnPageChangeListener(this);
+        }
         if (pager.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
@@ -1164,7 +1321,7 @@ public class StepperIndicator2 extends View {
         this.pager = pager;
         this.stepCount = stepCount;
         currentStep = 0;
-
+        pager.addOnPageChangeListener(this);
 
         if (showLabels && labels == null) {
             setLabelsUsingPageTitles();
@@ -1175,11 +1332,11 @@ public class StepperIndicator2 extends View {
     }
 
     private void setLabelsUsingPageTitles() {
-        RecyclerView.Adapter adapter = pager.getAdapter();
-        int pagerCount = adapter.getItemCount();
+        PagerAdapter pagerAdapter = pager.getAdapter();
+        int pagerCount = pagerAdapter.getCount();
         labels = new CharSequence[pagerCount];
         for (int i = 0; i < pagerCount; i++) {
-            // labels[i] = pagerAdapter.getPageTitle(i);
+            labels[i] = pagerAdapter.getPageTitle(i);
         }
     }
 
@@ -1221,27 +1378,27 @@ public class StepperIndicator2 extends View {
     }
 
     /**
-     * Add the {@link StepperIndicator.OnStepClickListener} to the list of listeners which will receive events when an step is clicked.
+     * Add the {@link OnStepClickListener} to the list of listeners which will receive events when an step is clicked.
      *
-     * @param listener The {@link StepperIndicator.OnStepClickListener} which will be added
+     * @param listener The {@link OnStepClickListener} which will be added
      */
-    public void addOnStepClickListener(StepperIndicator2.OnStepClickListener listener) {
+    public void addOnStepClickListener(OnStepClickListener listener) {
         onStepClickListeners.add(listener);
     }
 
     /**
-     * Remove the specified {@link StepperIndicator.OnStepClickListener} from the list of listeners which will receive events when an
+     * Remove the specified {@link OnStepClickListener} from the list of listeners which will receive events when an
      * step is clicked.
      *
-     * @param listener The {@link StepperIndicator.OnStepClickListener} which will be removed
+     * @param listener The {@link OnStepClickListener} which will be removed
      */
     @SuppressWarnings("unused")
-    public void removeOnStepClickListener(StepperIndicator.OnStepClickListener listener) {
+    public void removeOnStepClickListener(OnStepClickListener listener) {
         onStepClickListeners.remove(listener);
     }
 
     /**
-     * Remove all {@link StepperIndicator.OnStepClickListener} listeners from the StepperIndicator widget.
+     * Remove all {@link OnStepClickListener} listeners from the StepperIndicator widget.
      * No more events will be propagated.
      */
     @SuppressWarnings("unused")
@@ -1250,7 +1407,7 @@ public class StepperIndicator2 extends View {
     }
 
     /**
-     * Check if the widget has any valid {@link StepperIndicator.OnStepClickListener} listener set for receiving events from the steps.
+     * Check if the widget has any valid {@link OnStepClickListener} listener set for receiving events from the steps.
      *
      * @return {@code true} if there are listeners registered, {@code false} otherwise.
      */
@@ -1273,24 +1430,24 @@ public class StepperIndicator2 extends View {
         invalidate();
     }
 
-//    @Override
-//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//        /* no-op */
-//    }
-//
-//    @Override
-//    public void onPageSelected(int position) {
-//        setCurrentStep(position);
-//    }
-//
-//    @Override
-//    public void onPageScrollStateChanged(int state) {
-//        /* no-op */
-//    }
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        /* no-op */
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        setCurrentStep(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        /* no-op */
+    }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
-        StepperIndicator2.SavedState savedState = (StepperIndicator2.SavedState) state;
+        SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         // Try to restore the current step
         currentStep = savedState.mCurrentStep;
@@ -1300,7 +1457,7 @@ public class StepperIndicator2 extends View {
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
-        StepperIndicator2.SavedState savedState = new StepperIndicator2.SavedState(superState);
+        SavedState savedState = new SavedState(superState);
         // Store current stop so that it can be resumed when restored
         savedState.mCurrentStep = currentStep;
         return savedState;
@@ -1328,15 +1485,15 @@ public class StepperIndicator2 extends View {
     private static class SavedState extends BaseSavedState {
 
         @SuppressWarnings("UnusedDeclaration")
-        public static final Parcelable.Creator<StepperIndicator2.SavedState> CREATOR = new Parcelable.Creator<StepperIndicator2.SavedState>() {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
             @Override
-            public StepperIndicator2.SavedState createFromParcel(Parcel in) {
-                return new StepperIndicator2.SavedState(in);
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
             }
 
             @Override
-            public StepperIndicator2.SavedState[] newArray(int size) {
-                return new StepperIndicator2.SavedState[size];
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
             }
         };
         private int mCurrentStep;

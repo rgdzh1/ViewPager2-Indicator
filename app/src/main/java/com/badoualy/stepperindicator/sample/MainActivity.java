@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.badoualy.stepperindicator.StepperIndicator;
+import com.badoualy.stepperindicator.yey.StepperIndicator;
 import com.badoualy.stepperindicator.sample.viewpager2.ViewPager2Activity;
 
 public class MainActivity extends AppCompatActivity {
