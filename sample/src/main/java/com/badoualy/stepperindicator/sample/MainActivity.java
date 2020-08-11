@@ -1,11 +1,17 @@
 package com.badoualy.stepperindicator.sample;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.badoualy.stepperindicator.StepperIndicator;
+import com.badoualy.stepperindicator.sample.viewpager2.ViewPager2Activity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
                 pager.setCurrentItem(step, true);
             }
         });
+        initViewPager2();
     }
 
+    private void initViewPager2() {
+        Button btnStart = (Button) findViewById(R.id.btn);
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ViewPager2Activity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
