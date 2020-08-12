@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-def compileLocal = true
+def compileLocal = false
 
 android {
     compileSdkVersion 29
