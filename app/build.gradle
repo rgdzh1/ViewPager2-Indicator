@@ -34,5 +34,5 @@ dependencies {
     if (compileLocal)
         implementation project(':stepper_indicator')
     else
-        implementation 'com.github.badoualy:stepper-indicator:1.0.4'
+        implementation 'com.yey:stepper_indicator:0.0.3'
 }
