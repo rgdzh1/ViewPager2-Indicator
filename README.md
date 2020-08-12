@@ -65,6 +65,32 @@ indicator.setViewPager(pager, pager.getAdapter().getCount() - 1); //
 indicator.setStepCount(3);
 indicator.setCurrentStep(2);
 ```
+## 支持ViewPager2 
+原有的项目只有在`ViewPager`上才能使用, 我项目中用的是`ViewPager2`,所以fork后自己适配了`ViewPager2`,具体使用可以看`Demo`.等有时间了再整理`REDME`.
+#### 依赖
+```groovy
+implementation 'com.yey:stepper_indicator:0.0.3'
+```
+#### 使用
+`StepperIndicator2`支持在`ViewPager2`中使用.
+- `XML`
+```xml
+<com.badoualy.stepperindicator.yey.StepperIndicator2
+    android:id="@+id/stepper_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:stpi_stepCount="4" />
+```
+- 代码
+```java
+viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+        stepperIndicator2.setCurrentStep(position);
+    }
+});
+```
 
 Licence
 ----------------

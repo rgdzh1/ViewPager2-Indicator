@@ -1,1 +1,1 @@
-include ':library', ':app'
+include ':stepper_indicator', ':app'
