@@ -1,5 +1,4 @@
-[![Release](https://jitpack.io/v/badoualy/stepper-indicator.svg)](https://jitpack.io/#badoualy/stepper-indicator)
-
+[![Release](https://jitpack.io/v/rgdzh1/ViewPager2-Indicator.svg)](https://jitpack.io/#rgdzh1/ViewPager2-Indicator)
 #### 依赖
 ```groovy
 // 1.
