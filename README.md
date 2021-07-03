@@ -1,4 +1,5 @@
 [![Release](https://jitpack.io/v/badoualy/stepper-indicator.svg)](https://jitpack.io/#badoualy/stepper-indicator)
+
 #### 依赖
 ```groovy
 // 1.
@@ -61,6 +62,11 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     }
 });
 ```
+#### 效果
+<img src="screen.gif" style="zoom:50%">
+
+#### Demo下载
+<img src="下载.png" style="zoom:50%">
 
 Licence
 ----------------
