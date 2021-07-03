@@ -1,46 +1,18 @@
 [![Release](https://jitpack.io/v/badoualy/stepper-indicator.svg)](https://jitpack.io/#badoualy/stepper-indicator)
-
-# ![](https://github.com/badoualy/stepper-indicator/blob/master/sample/src/main/res/mipmap-mdpi/ic_launcher.png) Stepper indicator
-> ### Designed by the awesome https://dribbble.com/LeslyPyram :)
-> #### iOS (swift) version available at https://github.com/chenyun122/StepIndicator
-
-<img src="https://github.com/badoualy/stepper-indicator/blob/master/ART/screen.gif" width="300">
-
-Sample
-----------------
-
-You can checkout the [Sample Application](https://play.google.com/store/apps/details?id=com.badoualy.stepperindicator.sample) on the Play Store
-
-Setup
-----------------
-
-First, add jitpack in your build.gradle at the end of repositories:
- ```gradle
-repositories {
-    // ...       
-    maven { url "https://jitpack.io" }
+#### 依赖
+```groovy
+// 1.
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+// 2.
+dependencies {
+    implementation 'com.github.rgdzh1:ViewPager2-Indicator:0.0.4'
 }
 ```
-
-Then, add the library dependency:
-```gradle
-compile 'com.github.badoualy:stepper-indicator:1.0.7'
-```
-
-Now go do some awesome stuff!
-
-Usage
-----------------
-
-```xml
-<com.badoualy.stepperindicator.yey.StepperIndicator
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:stpi_stepCount="5"/>
-```
-
-Attributes:
-
+#### Attributes:
 | Name                   | Description                                         | Default value   |
 |------------------------|-----------------------------------------------------|-----------------|
 | stpi_animDuration      | duration of the line tracing animation              | 250 ms          |
@@ -56,6 +28,13 @@ Attributes:
 | stpi_lineMargin        | margin at each side of the line                     | 5dp             |
 | stpi_showDoneIcon      | show the done check icon or not                     | true            |
 
+#### ViewPager指示器使用
+```xml
+<com.badoualy.stepperindicator.yey.StepperIndicator
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:stpi_stepCount="5"/>
+```
 ```java
 indicator.setViewPager(pager);
 // or keep last page as "end page"
@@ -64,15 +43,8 @@ indicator.setViewPager(pager, pager.getAdapter().getCount() - 1); //
 indicator.setStepCount(3);
 indicator.setCurrentStep(2);
 ```
-## 支持ViewPager2 
-原有的项目只有在`ViewPager`上才能使用, 我项目中用的是`ViewPager2`,所以fork后自己适配了`ViewPager2`,具体使用可以看`Demo`.等有时间了再整理`REDME`.
-#### 依赖
-```groovy
-implementation 'com.yey:stepper_indicator:0.0.3'
-```
-#### 使用
+#### ViewPager2指示器使用
 `StepperIndicator2`支持在`ViewPager2`中使用.
-- `XML`
 ```xml
 <com.badoualy.stepperindicator.yey.StepperIndicator2
     android:id="@+id/stepper_indicator"
@@ -80,7 +52,6 @@ implementation 'com.yey:stepper_indicator:0.0.3'
     android:layout_height="wrap_content"
     app:stpi_stepCount="4" />
 ```
-- 代码
 ```java
 viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     @Override

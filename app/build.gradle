@@ -34,5 +34,5 @@ dependencies {
     if (compileLocal)
         implementation project(':stepper_indicator')
     else
-        implementation 'com.yey:stepper_indicator:0.0.3'
+        implementation 'com.github.rgdzh1:ViewPager2-Indicator:0.0.4'
 }
