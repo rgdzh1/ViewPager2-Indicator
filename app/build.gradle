@@ -1,7 +1,4 @@
 apply plugin: 'com.android.application'
-
-def compileLocal = false
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -31,8 +28,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
-    if (compileLocal)
-        implementation project(':stepper_indicator')
-    else
-        implementation 'com.github.rgdzh1:ViewPager2-Indicator:0.0.4'
+    implementation project(':stepper_indicator')
+    // implementation 'com.github.rgdzh1:ViewPager2-Indicator:0.0.4'
 }
