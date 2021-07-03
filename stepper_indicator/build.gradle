@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "0.0.3"
+        versionName "0.0.4"
     }
 
     buildTypes {
@@ -39,8 +39,3 @@ dependencies {
     //ViewPager2
     api "androidx.viewpager2:viewpager2:1.0.0"
 }
-
-
-//必须放这里,不然提示这个错误
-//Caused by: java.lang.NullPointerException: android.compileSdkVersion is missing!
-apply from: "bintrayUpload.gradle"
