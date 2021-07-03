@@ -63,7 +63,7 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 });
 ```
 #### 效果
-<img src="screen.gif" style="zoom:50%">
+<img src="screen.gif" width="300">
 
 #### Demo下载
 <img src="下载.png" style="zoom:50%">
