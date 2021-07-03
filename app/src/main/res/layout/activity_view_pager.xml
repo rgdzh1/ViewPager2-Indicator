@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ViewPager2Activity">
+    android:orientation="vertical">
 
-    <com.badoualy.stepperindicator.yey.StepperIndicator2
-        android:id="@+id/stepper_indicator2"
+    <com.badoualy.stepperindicator.yey.StepperIndicator
+        android:id="@+id/stepper_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:stpi_stepCount="4" />
+        app:stpi_labels="@array/stepLabels" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp2"
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </LinearLayout>

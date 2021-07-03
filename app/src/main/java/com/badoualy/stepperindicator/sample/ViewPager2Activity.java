@@ -1,4 +1,4 @@
-package com.badoualy.stepperindicator.sample.viewpager2;
+package com.badoualy.stepperindicator.sample;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +27,7 @@ public class ViewPager2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_view_pager2);
         initFaragment();
         viewPager2 = (ViewPager2) findViewById(R.id.vp2);
-        stepperIndicator2 = (StepperIndicator2) findViewById(R.id.stepper_indicator);
+        stepperIndicator2 = (StepperIndicator2) findViewById(R.id.stepper_indicator2);
         viewPager2.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), this.getLifecycle()) {
             @NonNull
             @Override
